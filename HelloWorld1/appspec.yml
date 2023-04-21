@@ -1,0 +1,22 @@
+version: 0.0
+os: windows
+files:
+  - source: \index.html
+    destination: c:\inetpub\wwwroot
+permissions:
+  - object: /web/current
+      pattern: "**"
+      owner: root
+      group: apache
+
+  - object: /web/current/devops/scripts
+      pattern: "**"
+      except: [/web/current/devops/scripts/files]
+      mode: 777
+      type:
+        - file
+Hooks:
+  - BeforeInstall:
+     - location: \before-install.bat
+       timeout: 900
+  - AfterInstall: "arn:aws:lambda:us-east-1:316637416951:function:Test-for-CodeDeploy"
